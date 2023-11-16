@@ -1,0 +1,8 @@
+version: '3'
+services:
+  app:
+    image: shimadsy/third:1.0
+    environment:
+      - DB_PORT=5432 # Переменная окружения для порта СУБД PostgreSQL
+    ports:
+      - "8080:8080" # Прокидываем порт контейнера на хост

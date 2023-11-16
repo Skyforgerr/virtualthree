@@ -1,23 +1,36 @@
-# Используйте официальный образ Maven в качестве базового образа
-FROM maven:3.8.4-openjdk-11 AS builder
+# Используем официальный образ OpenJDK 11
+FROM openjdk:17 as build
 
-# Копируем файлы с описанием зависимостей проекта (pom.xml) в контейнер
+# Установка рабочей директории
+WORKDIR /app
+
+# Копируем файлы с зависимостями для улучшения кэширования
+COPY mvnw .
+COPY .mvn .mvn
 COPY pom.xml .
 
-# Загружаем зависимости Maven в контейнер
-RUN mvn dependency:go-offline -B
+# Копируем и собираем приложение
+COPY src src
+RUN ./mvnw install -DskipTests
 
-# Копируем исходный код приложения в контейнер
-COPY src ./src
+# Вторая стадия - сборка JAR
+FROM openjdk:17-jre-slim
+WORKDIR /app
+COPY --from=build /app/target/third.jar app.jar
 
-# Собираем JAR-файл с помощью Maven
-RUN mvn package
+# Устанавливаем переменную окружения для порта СУБД PostgreSQL
+ENV DB_PORT=5432
 
-# Создаем финальный образ на основе образа с JAR-файлом
-FROM openjdk:11-jre-slim
+# Добавляем метаданные LABEL
+LABEL maintainer="Рослов Павел и Постников Иван ИКБО-24-20" \
+    description="Spring Boot App with PostgreSQL" \
+    version="1.0"
 
-# Копируем JAR-файл из образа сборки в финальный образ
-COPY --from=builder /target/my-app.jar /app.jar
+# Копируем файл с фото герба РТУ МИРЭА
+RUN wget https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png -O /app/mirea.png
 
-# Указываем команду для запуска приложения при запуске контейнера
-CMD ["java", "-jar", "/app.jar"]
+# Экспортируем порт, на котором будет работать приложение
+EXPOSE 8080
+
+# Команда для запуска приложения
+CMD ["java", "-jar", "app.jar"]

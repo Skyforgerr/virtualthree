@@ -90,28 +90,41 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
-				<executions>
-				<execution>
-					<id>default-jar</id>
-					<phase>none</phase>
-				</execution>
-				</executions>
-			</plugin>
-			<!-- <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>3.1.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-        	</plugin> -->
+		<plugin>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>3.2.2</version>
+			<executions>
+			<execution>
+			<id>default-jar</id>
+			<phase>none</phase>
+			</execution>
+			</executions>
+      	</plugin>
+      	<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<configuration>
+			<finalName>third-0.0.1-SNAPSHOT</finalName>
+			<appendAssemblyId>false</appendAssemblyId>
+			<descriptorRefs>
+			<descriptorRef>jar-with-dependencies</descriptorRef>
+			</descriptorRefs>
+			<archive>
+			<manifest>
+			<mainClass>com.mozen.jardocker.App</mainClass>
+			</manifest>
+			</archive>
+			</configuration>
+			<executions>
+			<execution>
+			<id>make-assembly</id>
+			<phase>package</phase>
+			<goals>
+			<goal>single</goal>
+			</goals>
+			</execution>
+			</executions>
+      </plugin>
 		</plugins>
 	</build>
 
