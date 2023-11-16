@@ -10,9 +10,21 @@
 <body>
     <header th:insert="blocks/header :: header"></header>
 
-    <form >
-        
-    </form>
+    <div th:switch="${namePage}">
+        <div th:case="Главная">
+            <img src="https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png" alt="Картика гебра МИРЭА">
+        </div>
+        <div th:case="Добавление">
+            <form action="" method="post">
+                <label>Название</label>
+                <input type="text" name="title">
+            </form>
+        </div>
+        <div th:case="Вывод">
+            <p th:each="el : ${Elements}" th:text="${el.title}"></p>
+        </div>
+      </div>
+      
 
 </body>
 </html>

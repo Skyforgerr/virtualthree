@@ -1,5 +1,6 @@
 package app.ex2;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import java.io.*;
 
 @Controller
 public class ControllerIndex {
+    @Autowired
     ElementRepository elementRepository;
 
     @GetMapping("/")
@@ -34,12 +36,6 @@ public class ControllerIndex {
     public String get(Model model) throws IOException {
         model.addAttribute("namePage", "Вывод");
         model.addAttribute("Elements", elementRepository.findAll());
-        return "index";
-    }
-
-    @GetMapping("/gerb")
-    public String gerb(Model model) throws IOException {
-        model.addAttribute("namePage", "Герб МИРЭА");
         return "index";
     }
 }
