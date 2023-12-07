@@ -1,26 +1,18 @@
-version: '3'
-
+version: '1'
 services:
-  my_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  java-server:
+    build: ./
+    restart: always
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: ex3_2
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
 
-  postgres:
+  db:
     image: postgres:latest
+    container_name: work
+    restart: always
+    environment:
+      POSTGRES_DB: ex3_2
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_DB: ex3_2
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
