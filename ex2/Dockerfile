@@ -1,4 +1,4 @@
-# Используем официальный образ OpenJDK 11
+# Используем официальный образ OpenJDK 17
 FROM openjdk:17 as build
 
 # Установка рабочей директории
@@ -13,13 +13,16 @@ COPY pom.xml .
 COPY src src
 RUN ./mvnw install -DskipTests
 
-# Копируем файл с фото герба РТУ МИРЭА
-RUN wget https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png -O /app/target/images/MIREA_Gerb_Colour.png
+# Создаем каталог для изображений
+RUN mkdir -p /app/target/images
+
+# Копируем файл с фото герба РТУ МИРЭА, используя curl
+RUN curl -o /app/target/images/MIREA_Gerb_Colour.png https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png
 
 # Вторая стадия - сборка JAR
-FROM openjdk:17-jre-slim
+FROM openjdk:17
 WORKDIR /app
-COPY --from=build /app/target/third.jar app.jar
+COPY --from=build /app/target/ex2-0.0.1-SNAPSHOT.jar app.jar
 
 # Устанавливаем переменную окружения для порта СУБД PostgreSQL
 ENV DB_PORT=5432
