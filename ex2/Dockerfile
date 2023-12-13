@@ -17,7 +17,7 @@ RUN ./mvnw install -DskipTests
 RUN mkdir -p /app/target/images
 
 # Копируем файл с фото герба РТУ МИРЭА, используя curl
-RUN curl -o /app/target/images/MIREA_Gerb_Colour.png https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png
+#RUN wget -o /app/target/images/MIREA_Gerb_Colour.png https://www.mirea.ru/upload/medialibrary/80f/MIREA_Gerb_Colour.png
 
 # Вторая стадия - сборка JAR
 FROM openjdk:17
